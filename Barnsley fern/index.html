@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Simple circles using recursion</title>
+  <title>Barnsley fern</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -16,9 +16,8 @@
   <div class="container">
 
     <div class="col-md-8">
-      <h1>Fractals using recursion</h1>
-      <p>A simple implementation of recursion to draw some aesthetically pleasing circles! Use the slider
-      to change the radius.</p>
+      <h1>Barnsley fern</h1>
+      <p>Implementing Barnsley fern using JavaScript.</p>
       <!-- <div class="col-md-4">
       <textarea class="form-control" maxlength="4" onfocus="this.value=''; this.onfocus='';" style="background:#ffffff; color:#000000; resize:none" rows="1" id="circle">Enter radius</textarea>
       </div> -->
@@ -31,10 +30,10 @@
       <!-- <span id="mySlider"></span> -->
       <span id="mySlider"></span>
       <!-- <input type="number" id="mySlider" style="margin-top:7px;" value="72"> -->
-      <div class="range-slider round" data-slider data-options="display_selector: #mySlider; start: 1; end: 9999;">
+      <!-- <div class="range-slider round" data-slider data-options="display_selector: #mySlider; start: 0.001; end: 0.020; step: 0.001">
         <span class="range-slider-handle"></span>
         <span class="range-slider-active-segment"></span>
-      </div>
+      </div> -->
 </div>
 
 
@@ -54,46 +53,100 @@ $(document).ready(function() {
 })
 
 var n;
-var x = 450; var y = 250; var radius;
+var a = 0; var b = 0; var radius;
+clean();
+ barnsley(a,b);
 
 $('[data-slider]').on('change.fndtn.slider', function(){
          var value = $(this).attr('data-slider');
-         clean();
-         factorial(value);
-         console.log(value);
-
-    });
+        //  clean();
+        //  barnsley(a,b,value);
+        }
 
 
-function clean(){
-  console.log("testing");
-  var c=document.getElementById("myCanvas");
-  var ctx=c.getContext("2d");
-  ctx.clearRect(0, 0, 900, 500);
-}
+    );
 
-function draw(x,y,radius){
-  // console.log("test");
-  var c = document.getElementById("myCanvas");
-  var ctx = c.getContext("2d");
-  ctx.beginPath();
-  ctx.arc(x, y, radius, 0, 2 * Math.PI);
-  ctx.fillStyle = '#'+(Math.random()*0xFFFF33<<0).toString(16);
-  ctx.fill();
-  ctx.stroke();
-  ctx.closePath();
-}
 
-function factorial(n) {
-  //draw(x,y,n);
-  draw(x - n/2,y,n/2);
-  draw(x + n/2,y,n/2);
-  draw(x,y/2,n/2);
-  draw(x,y + y/2,n/2);
-  if(n>2) {
-    return n * factorial(n*0.75);
-  }
-}
+    function clean(){
+      console.log("testing");
+      var c=document.getElementById("myCanvas");
+      var ctx=c.getContext("2d");
+      ctx.clearRect(0, 0, 900, 500);
+    }
+
+
+    function barnsley(a,b) {
+
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+      // ctx.fillStyle = 'green';
+      ctx.translate(ctx.canvas.width / 2, ctx.canvas.height);
+
+
+        for (var i = 0; i < 10000; i++) {
+          var rand = Math.random() * 100;
+          if (rand < 1) {
+            fern1();
+          } else if (rand < 86) {
+            fern2();
+          } else if (rand < 94) {
+            fern3();
+          } else {
+            fern4();
+          }
+        }
+
+
+      function fern1() {
+        var xn = a;
+        var yn = b;
+        var zx = 0;
+        var zy = 0.16 * yn;
+        draw(zx, zy);
+      }
+
+      function fern2() {
+        var xn = a;
+        var yn = b;
+        // var xrand = Math.floor(Math.random() * (2 + 2 + 1)) -2;
+        // console.log(xrand);
+        var zx =  0.87  * xn + 0.09 * yn;
+        var zy = -0.04 * xn + 0.85 * yn + 1.6;
+        draw(zx, zy);
+      }
+
+      function fern3() {
+        var xn = a;
+        var yn = b;
+        var zx = 0.2 * xn - 0.26 * yn;
+        var zy = 0.23 * xn + 0.22 * yn + 1.6;
+        draw(zx, zy);
+      }
+
+      function fern4() {
+        var xn = a;
+        var yn = b;
+        var zx = -0.15 * xn + 0.28 * yn;
+        var zy = 0.26 * xn + 0.24 * yn + 0.44;
+        draw(zx, zy);
+      }
+
+      function draw(xn, yn) {
+        a = xn;
+        b = yn;
+        ctx.fillStyle = 'red';
+        // ctx.beginPath();
+        // ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        // ctx.fillStyle = '#'+(Math.random()*0xFFFF33<<0).toString(16);
+        // ctx.fill();
+        // ctx.stroke();
+        // ctx.closePath();
+        ctx.fillRect(xn * 20, -yn * 20, 1, 1);
+      }
+
+    }
+
+
 </script>
 
 </body>
